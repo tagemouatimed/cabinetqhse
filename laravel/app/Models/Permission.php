@@ -14,6 +14,11 @@ class Permission extends Model
 
     public static function autorise(string $role, string $module, string $action): bool
     {
+        // L'admin a toujours tous les droits : sinon la matrice vide verrouillerait le module Paramétrage lui-même.
+        if ($role === 'admin') {
+            return true;
+        }
+
         $colonne = 'peut_' . $action; // action: voir|ajouter|modifier|supprimer|imprimer
 
         return (bool) static::where('role', $role)->where('module', $module)->value($colonne);

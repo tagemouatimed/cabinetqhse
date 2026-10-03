@@ -8,6 +8,9 @@
                 <div class="card-header">{{ __('Register') }}</div>
 
                 <div class="card-body">
+                    @if (session('status'))
+                        <div class="alert alert-success" role="alert">{{ session('status') }}</div>
+                    @endif
                     <form method="POST" action="{{ route('register') }}">
                         @csrf
 
@@ -35,6 +38,46 @@
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <label for="role" class="col-md-4 col-form-label text-md-end">Rôle</label>
+
+                            <div class="col-md-6">
+                                <select id="role" name="role" class="form-control @error('role') is-invalid @enderror" required>
+                                    @foreach (\App\Models\User::ROLES as $valeur => $libelle)
+                                        <option value="{{ $valeur }}" @selected(old('role', 'utilisateur') === $valeur)>{{ $libelle }}</option>
+                                    @endforeach
+                                </select>
+
+                                @error('role')
+                                    <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <label for="fonction" class="col-md-4 col-form-label text-md-end">Fonction</label>
+
+                            <div class="col-md-6">
+                                <input id="fonction" type="text" class="form-control @error('fonction') is-invalid @enderror" name="fonction" value="{{ old('fonction') }}">
+
+                                @error('fonction')
+                                    <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <label for="telephone" class="col-md-4 col-form-label text-md-end">Téléphone</label>
+
+                            <div class="col-md-6">
+                                <input id="telephone" type="text" class="form-control @error('telephone') is-invalid @enderror" name="telephone" value="{{ old('telephone') }}" autocomplete="tel">
+
+                                @error('telephone')
+                                    <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
                                 @enderror
                             </div>
                         </div>
